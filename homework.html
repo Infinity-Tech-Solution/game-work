@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animal Fact Guessing Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+        }
+
+        #true-btn {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        #false-btn {
+            background-color: #f44336;
+            color: white;
+        }
+
+        #scoreboard {
+            margin-top: 20px;
+        }
+
+        #scoreboard p {
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Animal Fact Guessing Game</h1>
+        <div id="game">
+            <p id="fact"></p>
+            <button id="true-btn">True</button>
+            <button id="false-btn">False</button>
+        </div>
+        <div id="scoreboard">
+            <p>Your Marks: <span id="marks">50</span></p>
+            <p>Players Remaining: <span id="players">20</span></p>
+        </div>
+    </div>
+    <script>
+        const facts = [
+            { statement: "A group of lions is known as a 'pride'.", isTrue: true },
+            { statement: "Penguins can't fly, but they can swim very well.", isTrue: true },
+            { statement: "Elephants are the largest land animals on Earth.", isTrue: true },
+            { statement: "Bats are blind.", isTrue: false },
+            { statement: "Goldfish have a memory span of three seconds.", isTrue: false }
+        ];
+
+        let marks = 50;
+        let players = 20;
+
+        const factElement = document.getElementById("fact");
+        const marksElement = document.getElementById("marks");
+        const playersElement = document.getElementById("players");
+        const trueBtn = document.getElementById("true-btn");
+        const falseBtn = document.getElementById("false-btn");
+
+        function updateGame() {
+            if (players <= 1) {
+                alert("You won the game!");
+                return;
+            }   
+            if (marks <= 0) {
+                alert("You have been eliminated!");
+                return;
+            }
+            const randomFact = facts[Math.floor(Math.random() * facts.length)];
+            factElement.textContent = randomFact.statement;
+            trueBtn.onclick = () => checkAnswer(true, randomFact.isTrue);
+            falseBtn.onclick = () => checkAnswer(false, randomFact.isTrue);
+        }
+
+        function checkAnswer(guess, correct) {
+            if (guess === correct) {
+                marks += 10;
+            } else {
+                marks -= 5;
+                if (marks < 0) marks = 0;
+            }
+            players = Math.max(1, players - 1);
+            marksElement.textContent = marks;
+            playersElement.textContent = players;
+            updateGame();
+        }
+
+        updateGame();
+    </script>
+</body>
+</html>
